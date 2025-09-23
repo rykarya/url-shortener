@@ -1,0 +1,8 @@
+# File ini memberikan instruksi tambahan untuk Netlify
+
+# Bagian ini memerintahkan Netlify untuk mempublikasikan file _redirects
+# agar bisa dibaca oleh skrip di halaman utama Anda.
+[[headers]]
+  for = "/_redirects"
+  [headers.values]
+    Content-Type = "text/plain"
