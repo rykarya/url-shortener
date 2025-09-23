@@ -80,7 +80,7 @@
                 <!-- Existing Links Section -->
                 <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 fade-in" style="animation-delay: 0.3s;">
                     <h2 class="text-2xl font-semibold mb-4 text-slate-800">Daftar Tautan Aktif</h2>
-                    <p class="text-slate-600 mb-4">Tautan berikut diambil langsung dari file <code class="bg-slate-100 text-red-500 px-2 py-1 rounded-md text-sm font-mono">_redirects</code> Anda.</p>
+                    <p class="text-slate-600 mb-4">Tautan berikut dimasukkan secara manual ke dalam file HTML ini.</p>
                     <div class="overflow-x-auto border border-slate-200 rounded-lg">
                         <table class="min-w-full divide-y divide-slate-200">
                             <thead class="bg-slate-50">
@@ -90,8 +90,22 @@
                                 </tr>
                             </thead>
                             <tbody id="links-table-body" class="bg-white divide-y divide-slate-200">
-                                <!-- Rows will be inserted here by JavaScript -->
-                                <tr><td colspan="2" class="px-6 py-4 text-center text-slate-500">Memuat tautan...</td></tr>
+                                <!-- Baris-baris ini dimasukkan secara manual. -->
+                                <!-- Ingat: Anda harus mengedit bagian ini DAN file _redirects setiap kali ada perubahan. -->
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-sky-600">
+                                            <a href="https://ry-url.netlify.app/penilaianinfor12" target="_blank" class="hover:underline">/penilaianinfor12</a>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-slate-700 truncate" title="https://github.com">
+                                           <a href="https://ry-url.netlify.app/penilaianinfor12" target="_blank" class="hover:underline">/penilaianinfor12</a>
+                                        </div>
+                                    </td>
+                
+    
+                                <!-- TAMBAHKAN BARIS BARU DI SINI SESUAI CONTOH DI ATAS -->
                             </tbody>
                         </table>
                     </div>
@@ -166,57 +180,8 @@
                 }, 2000);
             }
 
-            // Fetch and display existing redirects
-            async function fetchRedirects() {
-                const tableBody = document.getElementById('links-table-body');
-                try {
-                    const response = await fetch('/_redirects');
-                    
-                    // MODIFIED: Check the response status and throw a detailed error
-                    if (!response.ok) {
-                        throw new Error(`File tidak dapat diakses (Status: ${response.status} ${response.statusText}). Pastikan file _redirects dan netlify.toml ada di direktori utama dan sudah ter-deploy.`);
-                    }
-
-                    const text = await response.text();
-                    const lines = text.split('\n').filter(line => line.trim() !== '' && !line.trim().startsWith('#'));
-                    
-                    tableBody.innerHTML = ''; // Clear loading state
-
-                    if (lines.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-slate-500">Belum ada tautan yang dibuat.</td></tr>';
-                        return;
-                    }
-
-                    lines.forEach(line => {
-                        const parts = line.split(/\s+/); 
-                        if (parts.length >= 2) {
-                            const shortPath = parts[0];
-                            const longUrl = parts[1];
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-sky-600">
-                                        <a href="${shortPath}" target="_blank" class="hover:underline">${window.location.origin}${shortPath}</a>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-slate-700 truncate" title="${longUrl}">
-                                       <a href="${longUrl}" target="_blank" class="hover:underline">${longUrl}</a>
-                                    </div>
-                                </td>
-                            `;
-                            tableBody.appendChild(tr);
-                        }
-                    });
-
-                } catch (error) {
-                    // MODIFIED: Display the detailed error message in the table
-                    console.error('Error fetching redirects:', error);
-                    tableBody.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-red-500 font-semibold">${error.message}</td></tr>`;
-                }
-            }
-
-            fetchRedirects();
+            // Fungsi untuk mengambil daftar tautan dinonaktifkan dalam mode manual.
+            // fetchRedirects();
         });
     </script>
 </body>
