@@ -1,0 +1,12 @@
+FILE INI ADALAH JANTUNG DARI PEMENDEK TAUTAN ANDA
+Format: /path-pendek https://www.google.com/search?q=https://url-panjang-tujuan.com
+- Gunakan spasi atau tab untuk memisahkan path dan URL.
+- Setiap tautan harus berada di baris baru.
+- Baris yang diawali dengan # adalah komentar dan akan diabaikan.
+--- CONTOH ---
+/github    https://github.com
+/netlify   https://www.netlify.com
+/docs      https://docs.netlify.com/routing/redirects/
+
+--- TAMBAHKAN LINK BARU ANDA DI BAWAH GARIS INI ---
+/penilaianinfor12  https://script.google.com/macros/s/AKfycbyl_8QmqfJgOyPNQSZRSc8PaCuGfo2E7gOhbQLkvVc6Nn6FPuxw4NjYsKEhLWLvbBsm/exec
