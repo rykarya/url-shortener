@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemendek Tautan Pribadi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-2xl mx-auto">
+            
+            <header class="text-center mb-8 fade-in">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Pemendek Tautan Pribadi Anda</h1>
+                <p class="mt-3 text-lg text-slate-600">Dikelola dengan sederhana menggunakan Netlify Redirects.</p>
+            </header>
+
+            <main class="space-y-8">
+                <!-- How to Use Section -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 fade-in" style="animation-delay: 0.1s;">
+                    <h2 class="text-2xl font-semibold mb-4 text-slate-800">Bagaimana Cara Kerjanya?</h2>
+                    <div class="space-y-4 text-slate-700">
+                        <p>Aplikasi ini tidak menggunakan database. Semua tautan pendek diatur dalam file <code class="bg-slate-100 text-red-500 px-2 py-1 rounded-md text-sm font-mono">_redirects</code>.</p>
+                        <ol class="list-decimal list-inside space-y-2 pl-2">
+                            <li>Untuk menambah tautan baru, <strong class="font-semibold">edit file <code class="bg-slate-100 text-red-500 px-2 py-1 rounded-md text-sm font-mono">_redirects</code></strong> di repositori Anda.</li>
+                            <li>Tambahkan satu baris baru dengan format: <code class="bg-slate-100 text-slate-800 px-2 py-1 rounded-md text-sm font-mono">/nama-pendek https://url-panjang.com</code></li>
+                            <li><strong class="font-semibold">Commit & Push</strong> perubahan ke GitHub.</li>
+                            <li>Netlify akan otomatis mendeploy versi baru, dan tautan Anda langsung aktif!</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Link Generator Section -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 fade-in" style="animation-delay: 0.2s;">
+                    <h2 class="text-2xl font-semibold mb-4 text-slate-800">Generator Baris Redirect</h2>
+                    <p class="text-slate-600 mb-4">Gunakan form ini untuk membuat format baris yang benar dengan mudah.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="shortname" class="block text-sm font-medium text-slate-700 mb-1">Nama Pendek (Custom)</label>
+                            <div class="flex items-center">
+                                <span class="bg-slate-100 border border-r-0 border-slate-300 text-slate-500 px-3 py-2 rounded-l-md">domain.com/</span>
+                                <input type="text" id="shortname" placeholder="meeting-penting" class="block w-full px-3 py-2 border border-slate-300 rounded-r-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="longurl" class="block text-sm font-medium text-slate-700 mb-1">URL Tujuan (Panjang)</label>
+                            <input type="url" id="longurl" placeholder="https://docs.google.com/..." class="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
+                        </div>
+                        <div>
+                            <button id="generateBtn" class="w-full bg-sky-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition duration-200">
+                                Buat Baris Kode
+                            </button>
+                        </div>
+                    </div>
+                    <div id="result" class="mt-6 hidden">
+                        <p class="text-sm font-medium text-slate-700 mb-2">Salin baris ini dan tempelkan ke file <code class="bg-slate-100 text-red-500 px-2 py-1 rounded-md text-sm font-mono">_redirects</code> Anda:</p>
+                        <div class="relative bg-slate-800 text-white p-4 rounded-md font-mono text-sm">
+                            <code id="output"></code>
+                            <button id="copyBtn" class="absolute top-2 right-2 bg-slate-600 hover:bg-slate-500 text-white text-xs font-semibold py-1 px-2 rounded-md transition">Salin</button>
+                        </div>
+                        <p id="copy-feedback" class="text-green-600 text-sm mt-2 text-right hidden">Berhasil disalin!</p>
+                    </div>
+                </div>
+
+                <!-- Existing Links Section -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 fade-in" style="animation-delay: 0.3s;">
+                    <h2 class="text-2xl font-semibold mb-4 text-slate-800">Daftar Tautan Aktif</h2>
+                    <p class="text-slate-600 mb-4">Tautan berikut diambil langsung dari file <code class="bg-slate-100 text-red-500 px-2 py-1 rounded-md text-sm font-mono">_redirects</code> Anda.</p>
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Tautan Pendek</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Tautan Tujuan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="links-table-body" class="bg-white divide-y divide-slate-200">
+                                <!-- Rows will be inserted here by JavaScript -->
+                                <tr><td colspan="2" class="px-6 py-4 text-center text-slate-500">Memuat tautan...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="text-center mt-12 text-slate-500 text-sm fade-in" style="animation-delay: 0.4s;">
+                <p>Dibuat untuk deployment di Netlify.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const resultDiv = document.getElementById('result');
+            const outputCode = document.getElementById('output');
+            const shortnameInput = document.getElementById('shortname');
+            const longurlInput = document.getElementById('longurl');
+            const copyFeedback = document.getElementById('copy-feedback');
+
+            // Generator Logic
+            generateBtn.addEventListener('click', () => {
+                const shortname = shortnameInput.value.trim();
+                const longurl = longurlInput.value.trim();
+
+                if (!shortname || !longurl) {
+                    alert('Mohon isi kedua kolom.');
+                    return;
+                }
+                
+                // Basic validation for URL
+                try {
+                    new URL(longurl);
+                } catch (_) {
+                    alert('URL Tujuan tidak valid.');
+                    return;
+                }
+
+                const redirectLine = `/${shortname}    ${longurl}`;
+                outputCode.textContent = redirectLine;
+                resultDiv.classList.remove('hidden');
+            });
+            
+            // Copy Logic
+            copyBtn.addEventListener('click', () => {
+                const textToCopy = outputCode.textContent;
+                if (navigator.clipboard) {
+                     navigator.clipboard.writeText(textToCopy).then(() => {
+                        showCopyFeedback();
+                    });
+                } else { // Fallback for older browsers
+                    const textArea = document.createElement("textarea");
+                    textArea.value = textToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showCopyFeedback();
+                    } catch (err) {
+                        console.error('Gagal menyalin text: ', err);
+                    }
+                    document.body.removeChild(textArea);
+                }
+            });
+            
+            function showCopyFeedback() {
+                copyFeedback.classList.remove('hidden');
+                setTimeout(() => {
+                    copyFeedback.classList.add('hidden');
+                }, 2000);
+            }
+
+            // Fetch and display existing redirects
+            async function fetchRedirects() {
+                const tableBody = document.getElementById('links-table-body');
+                try {
+                    const response = await fetch('/_redirects');
+                    if (!response.ok) {
+                        throw new Error('File _redirects tidak ditemukan.');
+                    }
+                    const text = await response.text();
+                    const lines = text.split('\n').filter(line => line.trim() !== '' && !line.trim().startsWith('#'));
+                    
+                    tableBody.innerHTML = ''; // Clear loading state
+
+                    if (lines.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-slate-500">Belum ada tautan yang dibuat.</td></tr>';
+                        return;
+                    }
+
+                    lines.forEach(line => {
+                        const parts = line.split(/\s+/); // Split by one or more spaces
+                        if (parts.length >= 2) {
+                            const shortPath = parts[0];
+                            const longUrl = parts[1];
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-sky-600">
+                                        <a href="${shortPath}" target="_blank" class="hover:underline">${window.location.origin}${shortPath}</a>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-slate-700 truncate" title="${longUrl}">
+                                       <a href="${longUrl}" target="_blank" class="hover:underline">${longUrl}</a>
+                                    </div>
+                                </td>
+                            `;
+                            tableBody.appendChild(tr);
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Error fetching redirects:', error);
+                    tableBody.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-red-500">Gagal memuat daftar tautan.</td></tr>';
+                }
+            }
+
+            fetchRedirects();
+        });
+    </script>
+</body>
+</html>
